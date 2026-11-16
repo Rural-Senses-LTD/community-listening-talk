@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A 3-minute talk by Yau Levy, co-founder of Rural Senses, based on his LinkedIn article of 12 October 2026.">
+    <meta property="og:title"       content="AI Will Make Community Listening Easier. Will We Actually Listen?">
+    <meta property="og:description" content="A 3-minute talk by Yau Levy, Rural Senses.">
+    <meta property="og:type"        content="website">
+    <title>AI Will Make Community Listening Easier. Will We Actually Listen?</title>
+
+    <!-- Poppins for display and body (Yau's choice). Helvetica Neue / Arial fall back when offline. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
+
+    <style>
+/* ── 1. Viewport base (verbatim from references/viewport-base.css) ── */
+{{VIEWPORT_BASE}}
+
+/* ── 2. Design tokens: Annual Report aesthetic, Cream Paper palette, Rural Senses accents ── */
+:root {
+    /* Paper */
+    --bg:          #faf9f7;
+    --surface:     #f2efe9;
+    --surface-2:   #ffffff;
+    --border:      #dedad2;
+    --text:        #1c1a17;
+    --text-muted:  #5c5248;
+
+    /* Rural Senses green, darkened one step so body-size text passes AA on cream */
+    --accent:      #3d6f55;
+    --accent-soft: #e3ece6;
+    /* Rural Senses orange: the bright value is for rules and bars only, the deep value for text */
+    --accent-2:        #b8501a;
+    --accent-2-bright: #ed7d31;
+    --accent-2-soft:   #f7d9c4;
+
+    /* Ink slides (title, close) */
+    --ink:          #1d1d1b;
+    --on-ink:       #f4f1ea;
+    --on-ink-muted: #c9cfcb;
+    --green-light:  #8cc2a4;
+    --green-deep:   #294a3b;
+
+    /* Sampled from the article's 2020 image: teal voice and words, amber highlights */
+    --teal:        #5f9eb1;
+    --teal-light:  #a2cfd1;
+    --amber:       #fcc165;
+    --amber-soft:  #fdddaa;
+
+    /* Warning red, used once: the underline under "worse off" */
+    --red:         #ef5a48;
+
+    /* Chart greys */
+    --bar-muted:   #cdc6bb;
+
+    --font-display: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+    --font-body:    'Poppins', 'Helvetica Neue', Arial, sans-serif;
+
+    /* Elevation tiers (anti-slop point 3) */
+    --shadow-sm: 0 1px 2px rgba(28, 26, 23, 0.06), 0 1px 3px rgba(28, 26, 23, 0.08);
+    --shadow-md: 0 6px 18px rgba(28, 26, 23, 0.08), 0 2px 4px rgba(28, 26, 23, 0.06);
+    --shadow-lg: 0 18px 48px rgba(28, 26, 23, 0.16), 0 4px 10px rgba(28, 26, 23, 0.08);
+
+    /* Extra type tiers for this deck */
+    --stat-size:    clamp(2.4rem, 7vw, 6rem);
+    --quote-size:   clamp(1.2rem, 2.9vw, 2.35rem);
+    --numeral-size: clamp(1.8rem, 4vw, 3.4rem);
+    --caption-size: clamp(0.85rem, 1.1vw, 1.05rem);
+
+    /* Larger small tiers than viewport-base: nothing on a slide may be too small to read from the back of a room */
+    --body-size:  clamp(0.95rem, 1.55vw, 1.35rem);
+    --small-size: clamp(0.85rem, 1.25vw, 1.1rem);
+    --label-size: clamp(0.9rem, 1.25vw, 1.15rem);
+}
+
+/* ── 3. Global ── */
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, .quote-text, .stat, .numeral {
+    font-family: var(--font-display);
+    font-optical-sizing: auto;
+}
+h1, h2 { font-weight: 600; letter-spacing: -0.025em; text-wrap: balance; }
+h3, .lede, .ask-line, .ask-measure { text-wrap: balance; }
+h3     { font-weight: 600; }
+
+.label {
+    font-family: var(--font-body);
+    font-weight: 600;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.8em;
+}
+
+.caption {
+    font-size: var(--caption-size);
+    color: var(--text-muted);
+    line-height: 1.45;
+    margin-top: 0.6em;
+}
+
+/* ── 4. Slide surfaces ── */
+
+/* Paper slides: a warm vignette plus grain, so no background is a flat fill (point 7) */
+.slide {
+    background:
+        radial-gradient(ellipse at 20% 0%, var(--surface-2) 0%, transparent 55%),
+        radial-gradient(ellipse at 100% 100%, var(--surface) 0%, transparent 60%),
+        var(--bg);
+}
+.slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    mix-blend-mode: multiply;
+    /* Paper grain (signature effect): SVG fractal noise, inline so the file stays self-contained */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.3 0 0 0 0 0.25 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    z-index: 2;
+}
+
+.slide.is-ink {
+    background:
+        radial-gradient(ellipse at 0% 100%, var(--green-deep) 0%, transparent 55%),
+        var(--ink);
+    color: var(--on-ink);
+}
+.slide.is-ink::after { mix-blend-mode: screen; opacity: 0.05; }
+
+.slide-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-inline: clamp(1.5rem, 6vw, 6rem);
+}
+
+.split {
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: center;
+    width: 100%;
+}
+.split.image-left { grid-template-columns: 0.9fr 1.1fr; }
+
+.stack > * + * { margin-top: var(--content-gap); }
+
+figure.photo img,
+figure.doc img {
+    width: 100%;
+    max-height: none;
+    border-radius: var(--radius-md);
+}
+figure.photo img { box-shadow: var(--shadow-lg); object-fit: cover; }
+figure.doc .doc-card {
+    background: var(--surface-2);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: clamp(0.4rem, 1vw, 0.9rem);
+}
+figure.doc .doc-card img { border-radius: var(--radius-sm); }
+figure.doc + figure.doc { margin-top: clamp(0.8rem, 2vh, 1.4rem); }
+
+/* ── Slide 1: title over the cover photo ── */
+.slide-title .slide-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.slide-title .slide-bg img {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    object-position: 70% center;
+}
+/* Scrim keeps the headline readable over the photo's own overlaid words */
+.slide-title .slide-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg,
+        var(--ink) 0%,
+        color-mix(in srgb, var(--ink) 94%, transparent) 34%,
+        color-mix(in srgb, var(--ink) 55%, transparent) 56%,
+        transparent 78%);
+}
+.slide-title .slide-content { max-width: none; }
+.slide-title .title-block { max-width: min(46vw, 640px); }
+.slide-title h1 {
+    font-size: clamp(2rem, 4.6vw, 4.2rem);
+    font-weight: 600;
+    color: var(--on-ink);
+}
+.slide-title .subtitle {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.6rem, 3.6vw, 3.3rem);
+    line-height: 1.12;
+    color: var(--green-light);
+    margin-top: 0.35em;
+}
+.presenter {
+    margin-top: clamp(2rem, 8vh, 5rem);
+    font-size: var(--body-size);
+    color: var(--on-ink-muted);
+    letter-spacing: 0.02em;
+}
+.slide-title .label { color: var(--green-light); margin-bottom: 1.2em; }
+
+/* ── Slide 2: process chips ── */
+.steps {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: clamp(0.3rem, 0.8vw, 0.6rem);
+    list-style: none;
+}
+.steps li {
+    font-size: var(--small-size);
+    font-weight: 600;
+    color: var(--green-deep);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    padding: 0.5em 1em;
+    box-shadow: var(--shadow-sm);
+}
+.steps .arrow {
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    color: var(--accent-2);
+}
+.big-claim {
+    font-family: var(--font-display);
+    font-size: var(--h2-size);
+    font-weight: 600;
+    line-height: 1.15;
+}
+.big-claim em { color: var(--accent); font-style: italic; }
+.muted { color: var(--text-muted); font-size: var(--body-size); }
+
+/* ── Slide 3: quote with highlighter reveal ── */
+.quote-mark {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 6rem);
+    line-height: 0.6;
+    color: var(--accent-2-bright);
+    height: 0.5em;
+}
+.quote-text {
+    font-size: var(--quote-size);
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.35;
+}
+.highlight {
+    background-image: linear-gradient(var(--accent-2-soft), var(--accent-2-soft));
+    background-repeat: no-repeat;
+    background-position: 0 70%;
+    background-size: 0% 0.95em;
+}
+.slide.is-active .highlight {
+    animation: highlight-sweep 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.9s forwards;
+}
+@keyframes highlight-sweep { to { background-size: 100% 0.95em; } }
+
+.punchline {
+    font-family: var(--font-display);
+    font-size: var(--h3-size);
+    font-weight: 600;
+    color: var(--accent);
+}
+.footnote {
+    font-size: var(--small-size);
+    color: var(--text-muted);
+}
+
+/* ── Slide 4: the stat ── */
+.stat-lead { font-size: var(--small-size); color: var(--text-muted); }
+.stat {
+    font-size: var(--stat-size);
+    font-weight: 700;
+    line-height: 0.95;
+    color: var(--green-deep);
+    letter-spacing: -0.03em;
+}
+.stat-tail { font-size: var(--small-size); color: var(--accent); font-weight: 500; }
+.dot-list { list-style: none; display: grid; gap: clamp(0.5rem, 1.6vh, 1rem); }
+.dot-list li {
+    font-size: var(--body-size);
+    display: grid;
+    grid-template-columns: 0.9em 1fr;
+    gap: 0.6em;
+    align-items: baseline;
+}
+.dot-list li::before {
+    content: '';
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 50%;
+    background: var(--accent-2-bright);
+    transform: translateY(-0.05em);
+}
+
+/* ── Slide 5: the chart, rebuilt from the article image with a draw-in effect ── */
+.chart-title { font-size: clamp(1.8rem, 4.4vw, 3.6rem); line-height: 1.05; }
+.chart-title .turn { display: block; color: var(--accent-2); font-style: italic; }
+.chart { display: grid; gap: clamp(1.2rem, 4vh, 2.6rem); margin-top: clamp(1.4rem, 5vh, 3rem); }
+.chart-group { display: grid; gap: clamp(0.4rem, 1.4vh, 0.8rem); }
+.chart-group + .chart-group { padding-top: clamp(0.6rem, 2vh, 1.4rem); }
+.chart-label {
+    font-size: var(--label-size);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+.bar-row {
+    display: grid;
+    grid-template-columns: clamp(2.6rem, 5vw, 4rem) 1fr clamp(6rem, 13vw, 11rem);
+    align-items: center;
+    gap: clamp(0.6rem, 1.4vw, 1.2rem);
+}
+.bar-year, .bar-value { font-size: var(--small-size); font-weight: 500; }
+.bar-track { height: clamp(14px, 2.4vh, 24px); }
+.bar {
+    height: 100%;
+    width: var(--w);
+    min-width: 6px;
+    border-radius: 3px;
+    background: var(--bar-muted);
+    transform-origin: left center;
+    transform: scaleX(0);
+}
+.bar.ink    { background: var(--text); }
+.bar.accent { background: var(--accent-2-bright); }
+.bar-value.accent { color: var(--accent-2); font-weight: 600; }
+.slide.is-active .bar { animation: bar-draw 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0.3s) forwards; }
+@keyframes bar-draw { to { transform: scaleX(1); } }
+
+/* ── Slides 6 to 8: cards ── */
+.cards { display: grid; gap: clamp(0.7rem, 1.6vw, 1.3rem); width: 100%; }
+.cards.two   { grid-template-columns: repeat(2, 1fr); }
+.cards.three { grid-template-columns: repeat(3, 1fr); }
+.card {
+    max-width: none;
+    background: var(--surface-2);
+    border: var(--border-width) solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: var(--card-padding);
+    box-shadow: var(--shadow-sm);
+}
+.card .situation { font-size: var(--body-size); color: var(--text-muted); line-height: 1.45; }
+.card .ask {
+    font-family: var(--font-display);
+    font-size: var(--h3-size);
+    font-weight: 600;
+    line-height: 1.2;
+    margin-top: 0.45em;
+}
+.numeral {
+    font-size: var(--numeral-size);
+    font-weight: 700;
+    line-height: 1;
+    color: var(--accent-2-bright);
+}
+.card h3 { font-size: var(--h3-size); margin-top: 0.5em; line-height: 1.15; }
+.card p.body-copy { font-size: var(--body-size); color: var(--text-muted); line-height: 1.5; margin-top: 0.7em; }
+/* Viewport fill rule: sparse card slides get taller cards instead of empty space below */
+.cards.two .card   { min-height: clamp(6.5rem, 21vh, 12rem); display: flex; flex-direction: column; justify-content: center; }
+.cards.three .card { min-height: clamp(10rem, 36vh, 22rem); }
+
+.card.deep {
+    background: var(--green-deep);
+    border-color: transparent;
+    box-shadow: var(--shadow-md);
+    color: var(--on-ink);
+}
+.card.deep .numeral { color: var(--green-light); }
+.card.deep p.body-copy { color: var(--on-ink-muted); }
+
+/* ── Slide 9: close ── */
+.slide-close .slide-content {
+    max-width: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: stretch;
+}
+.slide-close .close-text {
+    padding: var(--slide-padding) clamp(1.5rem, 6vw, 6rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--content-gap);
+}
+.slide-close h2 { font-size: clamp(2.2rem, 5.4vw, 5rem); color: var(--on-ink); }
+.slide-close .ask-line {
+    font-family: var(--font-display);
+    font-size: var(--h3-size);
+    color: var(--green-light);
+    line-height: 1.3;
+    max-width: 26ch;
+}
+.slide-close .label { color: var(--green-light); }
+.slide-close .ask-measure {
+    font-size: var(--h3-size);
+    font-weight: 600;
+    color: var(--on-ink);
+    line-height: 1.3;
+}
+.slide-close figure { position: relative; margin: 0; overflow: hidden; }
+.slide-close figure img {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    object-position: 58% center;
+}
+.slide-close figcaption {
+    font-weight: 500;
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    padding: 2.5em 1.4em 1.1em;
+    font-size: var(--caption-size);
+    color: var(--on-ink);
+    background: linear-gradient(transparent, color-mix(in srgb, var(--ink) 85%, transparent));
+    line-height: 1.45;
+}
+
+/* ── Opening sequence (slide 1) ──
+   0.0s  a voice waveform starts "speaking" on the dark screen
+   0.5s  the cover photo comes out of a blur, then drifts slowly (Ken Burns)
+   1.1s  the headline rises word by word
+   2.3s  the question, then the presenter line */
+.slide-title .slide-bg { transform-origin: 72% 45%; }
+.slide-title.is-active .slide-bg { animation: ken-burns 16s ease-out 3s forwards; }
+@keyframes ken-burns { to { transform: scale(1.07); } }
+.slide-title .slide-bg img { opacity: 0; }
+.slide-title.is-active .slide-bg img {
+    animation: photo-reveal 2.6s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+@keyframes photo-reveal {
+    from { opacity: 0; filter: blur(16px) saturate(0.3); transform: scale(1.14); }
+    to   { opacity: 1; filter: none;                    transform: scale(1); }
+}
+
+.waveform {
+    display: flex;
+    align-items: center;
+    gap: clamp(2px, 0.32vw, 5px);
+    height: clamp(2.2rem, 7vh, 4.2rem);
+    margin-bottom: clamp(1rem, 3vh, 2rem);
+}
+.waveform span {
+    width: clamp(2px, 0.3vw, 5px);
+    height: 100%;
+    border-radius: 99px;
+    background: var(--green-light);
+    transform: scaleY(calc(var(--h) * 0.3));
+    opacity: 0;
+}
+.waveform span:nth-child(7n + 3) { background: var(--accent-2-bright); }
+.slide.is-active .waveform span {
+    animation:
+        wave-fade  0.5s  ease-out    calc(var(--i) * 12ms) forwards,
+        wave-speak 0.42s ease-in-out calc(var(--i) * 18ms) 6 alternate,
+        wave-idle  2.4s  ease-in-out calc(3.2s + var(--i) * 45ms) infinite alternate;
+}
+/* The resting state keeps the wave shape (never a flat dotted line) */
+@keyframes wave-speak { from { transform: scaleY(calc(var(--h) * 0.3)); } to { transform: scaleY(var(--h)); } }
+@keyframes wave-fade  { to { opacity: 1; } }
+@keyframes wave-idle  { from { transform: scaleY(calc(var(--h) * 0.3)); } to { transform: scaleY(calc(var(--h) * 0.65)); } }
+
+.split-words .word {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(0.55em);
+    filter: blur(6px);
+}
+.slide-title.is-active .split-words .word {
+    animation: word-in 0.85s cubic-bezier(0.16, 1, 0.3, 1) calc(1.1s + var(--i) * 0.09s) forwards;
+}
+@keyframes word-in { to { opacity: 1; transform: none; filter: blur(0); } }
+
+/* ── Slides 2 and 4: one image, one title, one subtitle ── */
+.big-title {
+    font-size: clamp(1.9rem, 4.1vw, 3.7rem);
+    line-height: 1.1;
+}
+.lede {
+    font-size: clamp(1rem, 1.8vw, 1.55rem);
+    font-weight: 300;
+    line-height: 1.45;
+    color: var(--text-muted);
+    margin-top: clamp(0.8rem, 2.4vh, 1.6rem);
+    max-width: 36ch;
+}
+.hero-split {
+    display: grid;
+    grid-template-columns: 1fr 1.05fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+}
+.tilt-in { opacity: 0; transform: perspective(1200px) rotateY(-14deg) rotateZ(2deg) translateY(30px); }
+.slide.is-active .tilt-in {
+    animation: tilt-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s) forwards;
+}
+@keyframes tilt-in { to { opacity: 1; transform: perspective(1200px) rotateY(-4deg) rotateZ(0.5deg); } }
+.hero-split .doc-card { box-shadow: var(--shadow-lg); }
+
+.slide-bleed .slide-content {
+    max-width: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+}
+.bleed-photo { margin: 0; overflow: hidden; }
+.bleed-photo img {
+    width: 100%;
+    height: 100%;
+    max-height: none;
+    object-fit: cover;
+    transform: scale(1.08);
+}
+.slide-bleed.is-active .bleed-photo img { animation: settle 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes settle { to { transform: scale(1); } }
+.bleed-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--slide-padding) clamp(1.5rem, 6vw, 6rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .slide-title .slide-bg img, .split-words .word, .tilt-in { opacity: 1 !important; filter: none !important; transform: none !important; }
+    .waveform span { transform: scaleY(calc(var(--h) * 0.6)) !important; opacity: 1 !important; animation: none !important; }
+    .bleed-photo img { transform: none !important; }
+}
+@media (max-width: 900px) {
+    .hero-split, .slide-bleed .slide-content { grid-template-columns: 1fr; }
+}
+
+
+/* Slide 2: the paper fills most of the screen so the audience can read it */
+.hero-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(0.8rem, 2.6vh, 1.8rem);
+    height: 100%;
+    justify-content: center;
+}
+.hero-head { text-align: center; max-width: min(92vw, 1180px); }
+.stack-title { font-size: clamp(1.4rem, 2.7vw, 2.5rem); line-height: 1.15; }
+.hero-head .lede { margin-inline: auto; max-width: 68ch; margin-top: 0.5em; }
+.hero-stack figure.doc { width: min(92vw, calc(58vh * 3.33 + 3rem)); }
+.hero-stack .doc-card { box-shadow: var(--shadow-lg); padding: clamp(1rem, 3vw, 2.6rem); }
+.hero-stack figure.doc img { width: 100%; height: auto; max-height: 58vh; object-fit: contain; }
+.rise-in { opacity: 0; transform: translateY(40px) scale(0.96); }
+.slide.is-active .rise-in { animation: rise-in 1.1s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s) forwards; }
+@keyframes rise-in { to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .rise-in { opacity: 1 !important; transform: none !important; } }
+
+/* ── Slide 2: the article's image, rebuilt sharp ── */
+.slide-article {
+    background:
+        radial-gradient(ellipse at 72% 62%, color-mix(in srgb, var(--teal-light) 16%, transparent) 0%, transparent 55%),
+        var(--surface-2);
+}
+.slide-article .hero-stack { gap: clamp(1rem, 3.2vh, 2.4rem); }
+.slide-article .slide-content { max-width: none; padding-inline: clamp(2rem, 5vw, 5.5rem); }
+.article-visual {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: clamp(1.2rem, 3.5vw, 3.5rem);
+    align-items: center;
+    width: 100%;
+    max-width: 1600px;
+    height: clamp(14rem, 52vh, 40rem);
+}
+.date-chip {
+    display: inline-block;
+    font-size: var(--h3-size);
+    font-weight: 500;
+    padding: 0.05em 0.4em;
+    margin-bottom: 0.55em;
+    background-image: linear-gradient(var(--amber-soft), var(--amber-soft));
+    background-repeat: no-repeat;
+    background-size: 0% 100%;
+}
+.slide.is-active .date-chip { animation: chip-sweep 0.8s cubic-bezier(0.65, 0, 0.35, 1) 1s forwards; }
+@keyframes chip-sweep { to { background-size: 100% 100%; } }
+.paper-side { padding-inline: 4%; min-width: 0; }
+.paper-frame {
+    background: var(--surface-2);
+    border: 3px solid var(--text);
+    padding: clamp(0.7rem, 1.8vw, 1.6rem);
+    box-shadow: var(--shadow-lg);
+}
+.paper-img { position: relative; display: block; }
+.paper-img img { width: 100%; max-height: none; }
+/* The amber box around the paper's title, overhanging the frame as in the article */
+.title-box {
+    position: absolute;
+    left: -7%;
+    right: -7%;
+    top: 1%;
+    height: 34%;
+    border: 3px solid var(--amber);
+    border-radius: 3px;
+    background: color-mix(in srgb, var(--surface-2) 25%, transparent);
+    opacity: 0;
+    transform: scale(0.94);
+}
+.slide.is-active .title-box { animation: box-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards; }
+@keyframes box-in { to { opacity: 1; transform: none; } }
+
+.voice-side { position: relative; height: 100%; aspect-ratio: 1 / 0.92; justify-self: center; }
+/* Faint concentric circles behind the portrait, as in the article image */
+.rings {
+    position: absolute;
+    inset: -12%;
+    background: repeating-radial-gradient(circle at 55% 47%,
+        transparent 0 clamp(18px, 2.6vw, 38px),
+        color-mix(in srgb, var(--teal-light) 40%, transparent) clamp(18px, 2.6vw, 38px) calc(clamp(18px, 2.6vw, 38px) + 1.5px));
+    -webkit-mask-image: radial-gradient(circle at 55% 47%, #000 25%, transparent 68%);
+    mask-image: radial-gradient(circle at 55% 47%, #000 25%, transparent 68%);
+}
+.portrait {
+    position: absolute;
+    left: 55%;
+    top: 47%;
+    width: 60%;
+    aspect-ratio: 1;
+    max-height: none;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: var(--shadow-md);
+    transform: translate(-50%, -50%) scale(0.85);
+    opacity: 0;
+}
+.slide.is-active .portrait { animation: portrait-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards; }
+@keyframes portrait-in { to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+.value-words span {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    font-size: calc(var(--s) * clamp(0.95rem, 1.75vw, 1.7rem));
+    font-weight: 400;
+    line-height: 1;
+    color: var(--teal-light);
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(10px);
+}
+.value-words span.deep { color: var(--teal); }
+.slide.is-active .value-words span { animation: word-float 0.9s ease-out var(--d) forwards; }
+@keyframes word-float { to { opacity: 0.95; transform: none; } }
+.waveform.teal {
+    position: absolute;
+    left: 14%;
+    right: 0;
+    bottom: 10%;
+    height: 17%;
+    margin: 0;
+    justify-content: center;
+}
+.waveform.teal span,
+.waveform.teal span:nth-child(7n + 3) { background: var(--teal); }
+.waveform.teal span:nth-child(3n) { background: var(--teal-light); }
+
+/* ── Icon badges (slides 6 and 8) ── */
+/* Reserve room at the bottom of content slides for the logo */
+.slide:not(.slide-bleed):not(.slide-close) > .slide-content { padding-bottom: clamp(3.6rem, 10vh, 6.5rem); }
+
+.cards .card.icon-card,
+.icon-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(0.8rem, 1.8vw, 1.5rem);
+    align-items: center;
+}
+.icon-badge {
+    width: clamp(3.8rem, 6.2vw, 5.6rem);
+    aspect-ratio: 1;
+    border-radius: 28%;
+    display: grid;
+    place-items: center;
+    background: var(--accent-soft);
+    color: var(--green-deep);
+}
+.icon-badge svg { width: 68%; height: 68%; overflow: visible; }
+/* Custom two-tone icons on a 48x48 grid: soft fill, outline, one amber element that carries the idea */
+.ic-line         { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.ic-thick        { stroke-width: 2.8; }
+.ic-faint        { opacity: 0.45; }
+.ic-fill         { fill: currentColor; opacity: 0.16; }
+.ic-line-fill    { fill: currentColor; }
+.ic-accent       { fill: var(--amber); stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
+.ic-accent-ring  { fill: none; stroke: currentColor; stroke-width: 1.4; }
+.ic-accent-line  { fill: none; stroke: var(--accent-2); stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.ic-on-accent    { fill: none; stroke: var(--green-deep); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.card.deep .ic-accent-line { stroke: var(--amber); }
+.card.deep .icon-badge {
+    background: color-mix(in srgb, var(--green-light) 18%, transparent);
+    color: var(--green-light);
+}
+.slide.is-active .icon-badge { animation: badge-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) calc(var(--delay, 0s) + 0.3s) both; }
+@keyframes badge-pop { from { opacity: 0; transform: scale(0.5) rotate(-12deg); } to { opacity: 1; transform: none; } }
+
+/* ── Slide 7: one illustration per trap, on ink, staggered ── */
+.slide-traps .label { color: var(--green-light); }
+.slide-traps h2 { color: var(--on-ink); }
+.traps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1rem, 2.6vw, 2.4rem);
+    align-items: start;
+    margin-top: clamp(0.4rem, 1.6vh, 1.2rem);
+}
+.trap:nth-child(2) { margin-top: clamp(0.8rem, 3.5vh, 2.4rem); }
+.trap:nth-child(3) { margin-top: clamp(1.6rem, 7vh, 4.8rem); }
+.trap-art {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    padding: clamp(0.5rem, 1.2vw, 1rem);
+    background: linear-gradient(160deg,
+        color-mix(in srgb, var(--green-deep) 90%, var(--ink)) 0%,
+        color-mix(in srgb, var(--ink) 65%, var(--green-deep)) 100%);
+    box-shadow: var(--shadow-lg);
+}
+/* Outlined numeral behind each illustration */
+.trap-art::before {
+    content: attr(data-num);
+    position: absolute;
+    right: 0.1em;
+    top: -0.2em;
+    font-family: var(--font-display);
+    font-size: clamp(4rem, 9vw, 8rem);
+    font-weight: 700;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px color-mix(in srgb, var(--green-light) 45%, transparent);
+}
+.trap-art svg { position: relative; display: block; width: 100%; height: auto; }
+.trap h3 { color: var(--on-ink); font-size: var(--h3-size); margin-top: 0.8em; line-height: 1.15; }
+.trap .body-copy { color: var(--on-ink-muted); font-size: var(--body-size); line-height: 1.5; margin-top: 0.45em; }
+
+.runway { fill: color-mix(in srgb, var(--green-light) 22%, transparent); }
+.runway-marks { fill: none; stroke: var(--on-ink); stroke-width: 2.5; stroke-linecap: round; opacity: 0.55; }
+.plane path { fill: var(--accent-2-bright); }
+.plane { transform-box: fill-box; transform-origin: center; }
+.slide.is-active .plane { animation: taxi 2.6s ease-in-out 0.8s infinite alternate; }
+@keyframes taxi { from { transform: translateY(8px); } to { transform: translateY(-10px); } }
+
+.bubble > path:first-child { fill: color-mix(in srgb, var(--green-light) 28%, transparent); stroke: var(--green-light); stroke-width: 1.5; }
+.bubble .voice { fill: none; stroke: var(--on-ink); stroke-width: 2.4; stroke-linecap: round; }
+.bubble { opacity: 0; transform-box: fill-box; transform-origin: left bottom; }
+.slide.is-active .bubble { animation: bubble-in 4.5s ease-out infinite; }
+.slide.is-active .b1 { animation-delay: 0.6s; }
+.slide.is-active .b2 { animation-delay: 1.1s; }
+.slide.is-active .b3 { animation-delay: 1.6s; }
+@keyframes bubble-in {
+    0%   { opacity: 0; transform: scale(0.6); }
+    12%  { opacity: 1; transform: none; }
+    85%  { opacity: 1; }
+    100% { opacity: 0; }
+}
+.nudge, .nudge-head { fill: none; stroke: var(--on-ink-muted); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.nudge { stroke-dasharray: 4 4; }
+.slide.is-active .nudge { animation: dash-run 1.2s linear infinite; }
+@keyframes dash-run { to { stroke-dashoffset: -16; } }
+.binder rect { fill: var(--on-ink); }
+.binder .spine { fill: var(--green-light); }
+.binder text { font-family: var(--font-body); font-size: 11px; font-weight: 700; letter-spacing: 0.08em; fill: var(--ink); }
+.lock rect { fill: var(--accent-2-bright); }
+.lock .shackle { fill: none; stroke: var(--accent-2-bright); stroke-width: 4; stroke-linecap: round; }
+.lock circle { fill: var(--ink); }
+.lock { transform-box: fill-box; transform-origin: center top; }
+.slide.is-active .lock { animation: lock-shake 4.5s ease-in-out 1.8s infinite; }
+@keyframes lock-shake {
+    0%, 88%, 100% { transform: none; }
+    91% { transform: rotate(-7deg); }
+    94% { transform: rotate(6deg); }
+    97% { transform: rotate(-3deg); }
+}
+
+.wave-real rect { fill: var(--green-light); }
+.wave-fake rect { fill: var(--accent-2-bright); }
+.wave-fake { opacity: 0; }
+.slide.is-active .wave-fake { animation: glitch 2.4s steps(1) 0.8s infinite; }
+@keyframes glitch {
+    0%   { opacity: 0;   transform: translate(0, 0); }
+    10%  { opacity: 0.9; transform: translate(5px, -2px); }
+    18%  { opacity: 0.7; transform: translate(-4px, 2px); }
+    26%  { opacity: 0.9; transform: translate(3px, 0); }
+    34%  { opacity: 0;   transform: translate(0, 0); }
+    100% { opacity: 0; }
+}
+.mask path:first-child { fill: none; stroke: var(--accent-2-bright); stroke-width: 2.2; }
+.mask .eye { fill: var(--accent-2-bright); }
+.mask .mouth { fill: none; stroke: var(--accent-2-bright); stroke-width: 2; stroke-linecap: round; }
+.mask { transform-box: fill-box; transform-origin: center; }
+.slide.is-active .mask { animation: mask-float 3s ease-in-out infinite alternate; }
+@keyframes mask-float { to { transform: translateY(-4px) rotate(-4deg); } }
+
+/* Slide 7: hand-drawn red underline under "worse off", drawn after the headline settles */
+.mark-under { position: relative; white-space: nowrap; }
+/* A marker stroke plus a lighter return stroke, wiped in left to right with clip-path
+   (stroke dashes are not used: they break with non-scaling strokes and render as dots) */
+.mark-under svg {
+    position: absolute;
+    left: -4%;
+    width: 108%;
+    bottom: -0.34em;
+    height: 0.5em;
+    overflow: visible;
+    clip-path: inset(-40% 100% -40% -6%);
+}
+.mark-under path {
+    fill: none;
+    stroke: var(--red);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+}
+.mark-under .u1 { stroke-width: clamp(3px, 0.32vw, 6px); }
+.mark-under .u2 { stroke-width: clamp(2px, 0.2vw, 4px); opacity: 0.7; }
+.slide.is-active .mark-under svg { animation: underline-wipe 0.75s cubic-bezier(0.65, 0, 0.35, 1) 1.1s forwards; }
+@keyframes underline-wipe { to { clip-path: inset(-40% -6% -40% -6%); } }
+
+
+/* ── Slide 4: what capturing this focus group looks like ── */
+.bleed-photo.capture { position: relative; container-type: size; }
+.capture .stage {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100cqw, calc(100cqh * 1.333));
+    aspect-ratio: 1333 / 1000;
+    transform: translate(-50%, -50%);
+    scale: 1.06;
+}
+.slide-bleed.is-active .capture .stage { animation: stage-settle 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+@keyframes stage-settle { to { scale: 1; } }
+.capture .stage img,
+.slide-bleed.is-active .capture .stage img { transform: none; animation: none; }
+.capture-map { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.voice-ring {
+    fill: none;
+    stroke: var(--green-light);
+    stroke-width: 5;
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+}
+.slide.is-active .voice-ring { animation: voice-ring 2.4s ease-out var(--d) infinite; }
+@keyframes voice-ring {
+    0%   { opacity: 0; transform: scale(0.7); }
+    15%  { opacity: 1; }
+    100% { opacity: 0; transform: scale(1.6); }
+}
+.flow {
+    fill: none;
+    stroke: var(--green-light);
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 2 16;
+    opacity: 0;
+}
+.slide.is-active .flow { animation: flow-in 0.6s ease-out var(--d) forwards, flow-run 1.1s linear var(--d) infinite; }
+@keyframes flow-in  { to { opacity: 0.95; } }
+@keyframes flow-run { to { stroke-dashoffset: -18; } }
+
+.capture-panel {
+    position: absolute;
+    left: clamp(1rem, 4%, 2.4rem);
+    top: clamp(1rem, 4%, 2.4rem);
+    width: min(66%, 26rem);
+    padding: clamp(0.7rem, 1.4vw, 1.1rem) clamp(0.8rem, 1.6vw, 1.3rem);
+    border-radius: var(--radius-lg);
+    background: color-mix(in srgb, var(--ink) 74%, transparent);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    box-shadow: var(--shadow-lg);
+    color: var(--on-ink);
+    opacity: 0;
+    transform: translateY(-12px);
+}
+.slide.is-active .capture-panel { animation: fade-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards; }
+.cp-head { display: flex; align-items: center; gap: 0.6em; font-size: var(--small-size); font-weight: 600; }
+.cp-time { margin-left: auto; font-variant-numeric: tabular-nums; color: var(--on-ink-muted); font-weight: 500; }
+.rec-dot { width: 0.7em; height: 0.7em; border-radius: 50%; background: var(--red); }
+.slide.is-active .rec-dot { animation: rec-blink 1.2s ease-in-out infinite; }
+@keyframes rec-blink { 50% { opacity: 0.25; } }
+.cp-wave { height: clamp(1.6rem, 4.5vh, 2.8rem); margin: 0.55em 0; justify-content: space-between; }
+.cp-wave span { width: clamp(2px, 0.25vw, 4px); }
+/* A live recording never rests: every bar keeps moving, offset so the wave never looks like a flat row */
+.slide.is-active .cp-wave span {
+    animation:
+        wave-fade 0.5s ease-out calc(var(--i) * 12ms) forwards,
+        wave-live 0.55s ease-in-out calc(var(--i) * -53ms) infinite alternate;
+}
+@keyframes wave-live {
+    from { transform: scaleY(0.22); }
+    to   { transform: scaleY(max(var(--h), 0.5)); }
+}
+.cp-steps { list-style: none; display: flex; flex-wrap: wrap; gap: 0.45em; }
+.cp-steps li {
+    font-size: var(--small-size);
+    font-weight: 500;
+    padding: 0.25em 0.7em 0.25em 0.55em;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--on-ink) 12%, transparent);
+    color: var(--on-ink-muted);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+}
+.cp-steps li::before {
+    content: '';
+    width: 0.85em;
+    height: 0.85em;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    opacity: 0.6;
+}
+.slide.is-active .cp-steps li { animation: step-done 0.4s ease-out var(--d) forwards; }
+.slide.is-active .cp-steps li::before { animation: step-tick 0.4s ease-out var(--d) forwards; }
+@keyframes step-done { to { background: color-mix(in srgb, var(--green-light) 30%, transparent); color: var(--on-ink); } }
+@keyframes step-tick { to { background: var(--green-light); border-color: var(--green-light); opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+    .mark-under svg { clip-path: none !important; }
+    .capture-panel, .flow { opacity: 1 !important; transform: none !important; }
+    .voice-ring { opacity: 0.9 !important; animation: none !important; }
+    .capture .stage { scale: 1 !important; }
+}
+
+/* ── Rural Senses logo on every slide (injected by JS) and the email line ── */
+.rs-mark {
+    position: absolute;
+    left: clamp(1.2rem, 3vw, 3rem);
+    bottom: clamp(1rem, 3vh, 2.2rem);
+    height: clamp(2.3rem, 5.2vh, 3.6rem);
+    aspect-ratio: 2301 / 962;
+    background: url("{{IMG:rs-logo.svg}}") no-repeat left center / contain;
+    z-index: 3;
+    pointer-events: none;
+}
+.is-ink > .rs-mark { background-image: url("{{IMG:rs-logo-dark.svg}}"); }
+.slide-bleed > .rs-mark { left: auto; right: clamp(3rem, 5vw, 4.5rem); }
+.email { font-size: var(--body-size); margin-top: 0.35em; display: flex; flex-wrap: wrap; gap: 0.25em 1.6em; }
+.email a { color: var(--green-light); font-weight: 500; text-decoration: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .date-chip { background-size: 100% 100% !important; }
+    .title-box, .value-words span { opacity: 1 !important; transform: none !important; }
+    .portrait { opacity: 1 !important; transform: translate(-50%, -50%) !important; }
+    .bubble { opacity: 1 !important; animation: none !important; }
+    .wave-fake { opacity: 0 !important; animation: none !important; }
+    .icon-badge { animation: none !important; }
+}
+@media (max-width: 900px) {
+    .article-visual, .traps { grid-template-columns: 1fr; }
+    .trap:nth-child(n) { margin-top: 0; }
+}
+
+/* ── 5. Entrance animations: play only on the active slide ── */
+.enter-fade-up { opacity: 0; transform: translateY(26px); }
+.slide.is-active .enter-fade-up {
+    animation: fade-up 0.75s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s) forwards;
+}
+@keyframes fade-up { to { opacity: 1; transform: none; } }
+
+.enter-blur { opacity: 0; filter: blur(8px); }
+.slide.is-active .enter-blur {
+    animation: blur-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) var(--delay, 0s) forwards;
+}
+@keyframes blur-in { to { opacity: 1; filter: blur(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+    .enter-fade-up, .enter-blur { opacity: 1 !important; transform: none !important; filter: none !important; }
+    .bar { transform: none !important; }
+    .highlight { background-size: 100% 0.95em !important; }
+}
+
+/* ── 6. Navigation chrome and presenter notes ── */
+.nav-dots { color: var(--accent); }
+.keyboard-hint { color: var(--text-muted); }
+
+.notes-panel {
+    position: fixed;
+    left: 50%;
+    bottom: clamp(0.6rem, 2vh, 1.2rem);
+    transform: translateX(-50%);
+    width: min(92vw, 980px);
+    background: color-mix(in srgb, var(--ink) 94%, transparent);
+    color: var(--on-ink);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: clamp(0.8rem, 1.8vw, 1.3rem) clamp(1rem, 2.4vw, 1.8rem);
+    z-index: 200;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+}
+.notes-panel[hidden] { display: none; }
+.notes-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--label-size);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--green-light);
+    font-weight: 600;
+}
+.notes-text { font-size: var(--small-size); line-height: 1.55; margin-top: 0.5em; color: var(--on-ink); }
+.speaker-notes { display: none; }
+
+@media (max-width: 900px) {
+    .split, .split.image-left, .slide-close .slide-content { grid-template-columns: 1fr; }
+    .cards.three, .cards.two { grid-template-columns: 1fr; }
+    .slide-title .title-block { max-width: 90vw; }
+}
+@media print {
+    .notes-panel { display: none !important; }
+    .enter-fade-up, .enter-blur { opacity: 1; transform: none; filter: none; }
+    .bar { transform: none; }
+}
+    </style>
+</head>
+<body>
+
+    <nav class="nav-dots" id="navDots" aria-label="Slide navigation"></nav>
+
+
+    <div class="notes-panel" id="notesPanel" hidden aria-live="polite">
+        <div class="notes-meta"><span id="notesSlot"></span><span id="notesClock">0:00</span></div>
+        <p class="notes-text" id="notesText"></p>
+    </div>
+
+    <!-- ═══════════════ SLIDES ═══════════════ -->
+
+    <!-- 1. Title -->
+    <section class="slide slide-title is-ink" id="slide-1" role="region" aria-label="Slide 1: Title" data-slide-index="0">
+        <div class="slide-bg">
+            <img src="{{IMG:cover.jpg}}" alt="Portrait of a woman, overlaid with words such as water, children and diseases. Photo: Annie Spratt">
+        </div>
+        <div class="slide-content">
+            <div class="title-block">
+                <div class="waveform" id="waveform" aria-hidden="true"></div>
+                <h1 class="split-words">AI will make community listening easier.</h1>
+                <p class="subtitle enter-fade-up" style="--delay:2.3s">Will we actually listen?</p>
+                <p class="presenter enter-fade-up" style="--delay:2.8s">Yau Levy - Co-founder, Rural Senses</p>
+                <p class="email enter-fade-up" style="--delay:3s"><a href="mailto:yau@ruralsenses.com">yau@ruralsenses.com</a><a href="https://ruralsenses.com" target="_blank" rel="noopener">ruralsenses.com</a></p>
+            </div>
+        </div>
+        <aside class="speaker-notes" data-time="0:00 - 0:15">In 2020, I co-authored one of the first peer-reviewed papers applying AI to sustainable development. What happened next surprised me, and it is why I want to ask one question today.</aside>
+    </section>
+
+    <!-- 2. 2020 -->
+    <section class="slide slide-article" id="slide-2" role="region" aria-label="Slide 2: In 2020 we cut the wait for community insight" data-slide-index="1">
+        <div class="slide-content">
+            <div class="hero-stack">
+                <div class="hero-head">
+                    <h2 class="stack-title enter-blur">In 2020, we cut the wait for community insight from months to weeks</h2>
+                    <p class="lede enter-fade-up" style="--delay:0.35s">The method we published at EMNLP with Cambridge and Oxford automated everything after the interview, sometimes cutting the wait to days.</p>
+                </div>
+                <!-- Recreates the article's image in sharp form: dated paper with its title boxed, and a voice turned into words -->
+                <div class="article-visual">
+                    <div class="paper-side rise-in" style="--delay:0.2s">
+                        <span class="date-chip">April 2020</span>
+                        <div class="paper-frame">
+                            <span class="paper-img">
+                                <img src="{{IMG:paper-hd.png}}" alt="Title and authors of the EMNLP 2020 paper: Natural Language Processing for Achieving Sustainable Development, the Case of Neural Labelling to Enhance Community Profiling. Costanza Conforti, Stephanie Hirmer, David Morgan, Marco Basaldella and Yau Ben Or, from Rural Senses Ltd., the University of Cambridge and the University of Oxford">
+                                <span class="title-box" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="voice-side">
+                        <div class="rings" aria-hidden="true"></div>
+                        <img class="portrait" src="{{IMG:portrait.jpg}}" alt="Portrait of a woman surrounded by words such as health, water, school, children and books. Photo: Annie Spratt">
+                        <div class="value-words" aria-hidden="true">
+                            <span style="--x:6%;  --y:10%; --s:1.0; --d:0.6s">Rain</span>
+                            <span style="--x:30%; --y:1%;  --s:0.8; --d:0.7s">Milk</span>
+                            <span class="deep" style="--x:58%; --y:2%;  --s:1.1; --d:0.8s">Snake</span>
+                            <span class="deep" style="--x:44%; --y:15%; --s:1.6; --d:0.9s">Health</span>
+                            <span style="--x:0%;  --y:30%; --s:1.5; --d:1.0s">School</span>
+                            <span style="--x:2%;  --y:48%; --s:1.1; --d:1.1s">Children</span>
+                            <span style="--x:4%;  --y:62%; --s:1.9; --d:1.2s">Life</span>
+                            <span style="--x:8%;  --y:82%; --s:1.3; --d:1.3s">Water</span>
+                            <span style="--x:76%; --y:34%; --s:1.1; --d:1.0s">Marriage</span>
+                            <span style="--x:80%; --y:50%; --s:1.2; --d:1.15s">Books</span>
+                            <span style="--x:78%; --y:72%; --s:0.9; --d:1.3s">Cook</span>
+                        </div>
+                        <div class="waveform teal" id="waveform2" aria-hidden="true"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <aside class="speaker-notes" data-time="0:15 - 0:42">We worked with researchers from the Universities of Cambridge and Oxford to show that audio clips and field notes could identify community needs faster and more accurately than traditional assessments. Reaching people was hard, translation was slow, and qualitative analysis needed specialist teams, so findings often arrived months after the decisions were made. We automated transcription, translation, analysis and reporting. Months of work became weeks, sometimes days.</aside>
+    </section>
+
+    <!-- 3. The quote -->
+    <section class="slide" id="slide-3" role="region" aria-label="Slide 3: What I heard off the record" data-slide-index="2">
+        <div class="slide-content">
+            <div class="split">
+                <div class="stack">
+                    <p class="label enter-fade-up">What I heard off the record</p>
+                    <div class="quote-mark enter-fade-up" style="--delay:0.1s" aria-hidden="true">“</div>
+                    <blockquote class="enter-fade-up" style="--delay:0.2s">
+                        <p class="quote-text">It doesn't matter what the community say. <span class="highlight">The project plan was already funded</span> and we can't change it.</p>
+                    </blockquote>
+                </div>
+                <figure class="photo enter-fade-up" style="--delay:0.4s">
+                    <img src="{{IMG:plan.jpg}}" alt="A thick binder labelled NGO project plan, weighed down by a brass stamp, next to a cassette recorder and handwritten notes">
+                </figure>
+            </div>
+            <p class="punchline enter-fade-up" style="--delay:1.6s">By removing the technical barriers, AI removed our excuses.</p>
+        </div>
+        <aside class="speaker-notes" data-time="0:42 - 1:07">We assumed organisations would be eager to hear what communities wanted. That was a bit naive. Some great organisations were, like Efficiency for Access, CLASP, Days for Girls and Fondation Botnar. But off the record, I heard this. [Pause, read the quote.] By removing the technical barriers, AI removed our excuses. What was left were our human and institutional flaws.</aside>
+    </section>
+
+    <!-- 4. Today -->
+    <section class="slide slide-bleed" id="slide-4" role="region" aria-label="Slide 4: Listening is now almost free" data-slide-index="3">
+        <div class="slide-content">
+            <figure class="bleed-photo capture">
+                <!-- The stage keeps the photo's own 4:3 shape, so the overlay marks stay on the speakers at any screen size -->
+                <div class="stage">
+                    <img src="{{IMG:uganda.jpg}}" alt="Women in Uganda sitting on mats around rows of picture cards during a Rural Senses community data collection activity">
+                    <svg class="capture-map" viewBox="0 0 1333 1000" aria-hidden="true">
+                        <path class="flow" style="--d:0.6s" d="M430 262C440 236 452 214 470 196"/>
+                        <path class="flow" style="--d:0.9s" d="M826 278C792 244 742 220 690 204"/>
+                        <path class="flow" style="--d:1.2s" d="M262 430C300 330 360 262 420 214"/>
+                        <path class="flow" style="--d:1.5s" d="M1124 480C1040 330 900 246 760 206"/>
+                        <circle class="voice-ring" style="--d:0.4s" cx="430" cy="308" r="48"/>
+                        <circle class="voice-ring" style="--d:0.7s" cx="830" cy="324" r="48"/>
+                        <circle class="voice-ring" style="--d:1.0s" cx="250" cy="478" r="48"/>
+                        <circle class="voice-ring" style="--d:1.3s" cx="1144" cy="528" r="48"/>
+                    </svg>
+                </div>
+                <div class="capture-panel" aria-hidden="true">
+                    <div class="cp-head">
+                        <span class="rec-dot"></span>
+                        <span class="cp-title">Listening</span>
+                        <span class="cp-time" id="cpTime">00:00</span>
+                    </div>
+                    <div class="waveform cp-wave" id="waveform3"></div>
+                    <ol class="cp-steps">
+                        <li style="--d:1.6s">Transcribed</li>
+                        <li style="--d:2.4s">Translated</li>
+                        <li style="--d:3.2s">Analysed</li>
+                    </ol>
+                </div>
+            </figure>
+            <div class="bleed-text">
+                <h2 class="big-title enter-blur" style="--delay:0.2s">Listening is now almost free</h2>
+                <p class="lede enter-fade-up" style="--delay:0.55s">Large volumes of feedback now take minutes to process, and more people can answer in their own language.</p>
+            </div>
+        </div>
+        <aside class="speaker-notes" data-time="1:07 - 1:27">Today the technology is far ahead of what we published. Speech recognition, translation and summarisation have improved dramatically. People can answer in their own language, and large volumes of feedback can be processed in minutes. Even the interview itself can sometimes be run by an AI voice call or a WhatsApp bot.</aside>
+    </section>
+
+    <!-- 5. The chart -->
+    <section class="slide" id="slide-5" role="region" aria-label="Slide 5: Listening got fast, changing course did not" data-slide-index="4">
+        <div class="slide-content">
+            <h2 class="chart-title enter-blur">Listening got fast. <span class="turn">Changing course did not.</span></h2>
+            <div class="chart" role="img" aria-label="Chart. From interview to insight: months in 2020, minutes in 2026. From insight to a changed decision: a grant cycle in 2020, still a grant cycle in 2026.">
+                <div class="chart-group">
+                    <p class="chart-label">From interview to insight</p>
+                    <div class="bar-row"><span class="bar-year">2020</span><div class="bar-track"><div class="bar" style="--w:100%; --delay:0.4s"></div></div><span class="bar-value">months</span></div>
+                    <div class="bar-row"><span class="bar-year">2026</span><div class="bar-track"><div class="bar ink" style="--w:1%; --delay:0.7s"></div></div><span class="bar-value">minutes</span></div>
+                </div>
+                <div class="chart-group">
+                    <p class="chart-label">From insight to a changed decision</p>
+                    <div class="bar-row"><span class="bar-year">2020</span><div class="bar-track"><div class="bar" style="--w:100%; --delay:1.1s"></div></div><span class="bar-value">a grant cycle</span></div>
+                    <div class="bar-row"><span class="bar-year">2026</span><div class="bar-track"><div class="bar accent" style="--w:96%; --delay:1.5s"></div></div><span class="bar-value accent">still a grant cycle</span></div>
+                </div>
+            </div>
+        </div>
+        <aside class="speaker-notes" data-time="1:27 - 1:37">Getting from interview to insight went from months to minutes. Getting from insight to a changed decision still takes a grant cycle.</aside>
+    </section>
+
+    <!-- 6. Hard questions -->
+    <section class="slide" id="slide-6" role="region" aria-label="Slide 6: The hard questions are now institutional" data-slide-index="5">
+        <div class="slide-content">
+            <p class="label enter-fade-up">It was never a tech problem</p>
+            <h2 class="enter-blur" style="--delay:0.1s">The hard questions are now institutional</h2>
+            <div class="cards two" role="list">
+                <article class="card icon-card enter-fade-up" style="--delay:0.3s" role="listitem">
+                    <!-- Signpost with boards pointing both ways: changing direction -->
+                    <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 48 48">
+        <circle class="ic-line-fill" cx="13" cy="41" r="3.2"/>
+        <path class="ic-line ic-faint" d="M13 37.5V14" stroke-dasharray="2.6 3.2"/>
+        <path class="ic-accent-line" d="M8.5 6.5l9 9M17.5 6.5l-9 9"/>
+        <path class="ic-line ic-thick" d="M13 34c0-9 6.5-13.5 16-13.5h7"/>
+        <path class="ic-line ic-thick" d="M32.5 15.5l5.5 5-5.5 5"/>
+    </svg></span>
+                    <div>
+                        <p class="situation">The community says the intervention solves the wrong problem.</p>
+                        <p class="ask">Can the grantee change direction?</p>
+                    </div>
+                </article>
+                <article class="card icon-card enter-fade-up" style="--delay:0.4s" role="listitem">
+                    <!-- Coin stack with an arrow: budget moving to a new priority -->
+                    <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 48 48">
+        <rect class="ic-fill" x="4" y="26" width="16" height="17" rx="3"/>
+        <rect class="ic-line" x="4" y="26" width="16" height="17" rx="3"/>
+        <ellipse class="ic-line" cx="12" cy="38" rx="4.8" ry="1.8"/>
+        <ellipse class="ic-line" cx="12" cy="34.2" rx="4.8" ry="1.8"/>
+        <rect class="ic-line" x="28" y="26" width="16" height="17" rx="3"/>
+        <path class="ic-line ic-faint" d="M11 22.5C13 10 32 8 36 22" stroke-dasharray="2.4 3"/>
+        <path class="ic-line" d="M32 18.2l4 4.4 4-4.4"/>
+        <ellipse class="ic-fill" cx="36" cy="38.5" rx="4.8" ry="1.8"/>
+        <circle class="ic-accent" cx="23.5" cy="11.5" r="4.2"/>
+        <circle class="ic-accent-ring" cx="23.5" cy="11.5" r="1.8"/>
+    </svg></span>
+                    <div>
+                        <p class="situation">Local staff identify a more urgent priority.</p>
+                        <p class="ask">Can the budget move?</p>
+                    </div>
+                </article>
+                <article class="card icon-card enter-fade-up" style="--delay:0.5s" role="listitem">
+                    <!-- Planned path (dashed) versus the path the evidence points to: a theory of change being revised -->
+                    <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 48 48">
+        <rect class="ic-fill" x="3" y="18" width="13" height="12" rx="2.5"/>
+        <rect class="ic-line" x="3" y="18" width="13" height="12" rx="2.5"/>
+        <rect class="ic-line ic-faint" x="32" y="4" width="13" height="11" rx="2.5" stroke-dasharray="2.4 2.6"/>
+        <path class="ic-line ic-faint" d="M16 21.5l15-8" stroke-dasharray="2.4 2.6"/>
+        <path class="ic-accent-line" d="M35.5 6.5l6 6M41.5 6.5l-6 6"/>
+        <path class="ic-line" d="M16 26.5c6 1.5 9.5 5 13.5 9.5"/>
+        <path class="ic-line" d="M25.6 36.9l4.4.2-.4-4.4"/>
+        <rect class="ic-accent" x="32" y="33" width="13" height="11" rx="2.5"/>
+        <path class="ic-on-accent" d="M35.5 38.6l2.2 2.2 4-4"/>
+    </svg></span>
+                    <div>
+                        <p class="situation">Evidence contradicts the theory of change the board approved.</p>
+                        <p class="ask">Will the funder see adaptation as learning or as failure?</p>
+                    </div>
+                </article>
+                <article class="card icon-card enter-fade-up" style="--delay:0.6s" role="listitem">
+                    <!-- A small organisation next to a large coin: trusting smaller NGOs with big money -->
+                    <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 48 48">
+        <path class="ic-fill" d="M3 43V31.5l7.5-6 7.5 6V43z"/>
+        <path class="ic-line" d="M3 43V31.5l7.5-6 7.5 6V43z"/>
+        <path class="ic-line" d="M8.6 43v-5.5h3.8V43"/>
+        <path class="ic-accent" d="M29 13.5h9l-2.6 4.5c6.8 3.4 10.1 9.6 10.1 15 0 7.3-5.6 10.5-12 10.5s-12-3.2-12-10.5c0-5.4 3.3-11.6 10.1-15z"/>
+        <path class="ic-line" d="M30.2 18h6.6"/>
+        <path class="ic-on-accent" d="M33.5 24.5v12M36.6 27c-.6-1.2-1.8-1.8-3.1-1.8-1.8 0-3.1 1-3.1 2.4 0 3.4 6.4 1.9 6.4 5.3 0 1.5-1.4 2.5-3.3 2.5-1.5 0-2.8-.7-3.4-1.9"/>
+    </svg></span>
+                    <div>
+                        <p class="situation">Headquarters can shrink.</p>
+                        <p class="ask">Can funders trust smaller NGOs with big money?</p>
+                    </div>
+                </article>
+            </div>
+        </div>
+        <aside class="speaker-notes" data-time="1:37 - 1:57">What remains are incentives, funding restrictions, power and risk tolerance. If a community says we are solving the wrong problem, can the grantee change direction? If evidence contradicts the theory of change, is adaptation learning or failure? These questions are now the core of the job.</aside>
+    </section>
+
+    <!-- 7. Three traps -->
+    <section class="slide slide-traps is-ink" id="slide-7" role="region" aria-label="Slide 7: Three traps hidden inside AI efficiency" data-slide-index="6">
+        <div class="slide-content">
+            <p class="label enter-fade-up">3 traps hidden inside AI efficiency</p>
+            <h2 class="enter-blur" style="--delay:0.1s">AI efficiency can leave organisations <span class="mark-under">worse off<svg viewBox="0 0 120 20" preserveAspectRatio="none" aria-hidden="true"><path class="u1" d="M3 11C24 6.5 52 13.5 78 8.5S109 6.5 117 8"/><path class="u2" d="M12 16C42 12 74 17.5 110 13.5"/></svg></span></h2>
+            <div class="traps" role="list">
+                <article class="trap enter-fade-up" style="--delay:0.3s" role="listitem">
+                    <div class="trap-art" data-num="1">
+                        <!-- The article's metaphor: a plane that can move but is confined to the runway -->
+                        <svg viewBox="0 0 200 120" role="img" aria-label="A plane taxiing on a runway, unable to take off">
+                            <path class="runway" d="M66 120 L91 18 H109 L134 120 Z"/>
+                            <path class="runway-marks" d="M100 26v10M100 48v12M100 72v14M100 98v18"/>
+                            <g class="plane">
+                                <path d="M100 40c3.2 0 4.8 3.2 4.8 7.5v12.5l23 10.5v5.5l-23-5.2v12.5l7.4 5.4v4.2l-12.2-3.2-12.2 3.2v-4.2l7.4-5.4v-12.5l-23 5.2v-5.5l23-10.5v-12.5c0-4.3 1.6-7.5 4.8-7.5z"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <h3>Tools without power</h3>
+                    <p class="body-copy">Communities provide more data, headquarters produce better dashboards, and power stays where it was.</p>
+                </article>
+                <article class="trap enter-fade-up" style="--delay:0.45s" role="listitem">
+                    <div class="trap-art" data-num="2">
+                        <!-- Feedback keeps arriving, the funded plan stays locked -->
+                        <svg viewBox="0 0 200 120" role="img" aria-label="Speech bubbles of feedback piling up against a locked project plan">
+                            <g class="bubbles">
+                                <g class="bubble b1"><path d="M14 14h58a7 7 0 0 1 7 7v12a7 7 0 0 1-7 7H32l-9 7v-7h-9a7 7 0 0 1-7-7V21a7 7 0 0 1 7-7z"/><path class="voice" d="M24 27v0M31 23v8M38 25v4M45 21v12M52 24v6M59 26v2"/></g>
+                                <g class="bubble b2"><path d="M30 50h58a7 7 0 0 1 7 7v12a7 7 0 0 1-7 7H48l-9 7v-7h-9a7 7 0 0 1-7-7V57a7 7 0 0 1 7-7z"/><path class="voice" d="M40 63v0M47 59v8M54 61v4M61 57v12M68 60v6M75 62v2"/></g>
+                                <g class="bubble b3"><path d="M14 86h58a7 7 0 0 1 7 7v8a7 7 0 0 1-7 7H32l-9 6v-6h-9a7 7 0 0 1-7-7v-8a7 7 0 0 1 7-7z"/><path class="voice" d="M24 97v0M31 94v7M38 95v5M45 92v10M52 95v5M59 96v2"/></g>
+                            </g>
+                            <path class="nudge" d="M100 66c8-12 18-16 28-12"/>
+                            <path class="nudge-head" d="M122 49l7 5-7 5"/>
+                            <g class="binder">
+                                <rect x="136" y="18" width="52" height="84" rx="5"/>
+                                <rect class="spine" x="136" y="18" width="9" height="84" rx="3"/>
+                                <text x="167" y="44" text-anchor="middle">PLAN</text>
+                            </g>
+                            <g class="lock">
+                                <path class="shackle" d="M158 72v-7a9 9 0 0 1 18 0v7"/>
+                                <rect x="153" y="71" width="28" height="22" rx="4"/>
+                                <circle cx="167" cy="81" r="2.6"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <h3>Listening without changing</h3>
+                    <p class="body-copy">Once feedback arrives every week, the gap between what communities say and what organisations do is plain to see.</p>
+                </article>
+                <article class="trap enter-fade-up" style="--delay:0.6s" role="listitem">
+                    <div class="trap-art" data-num="3">
+                        <!-- A real voice and a synthetic copy that glitches: deception gets cheaper -->
+                        <svg viewBox="0 0 200 120" role="img" aria-label="A voice waveform with a glitching synthetic copy behind a mask">
+                            <g class="wave-real"></g>
+                            <g class="wave-fake"></g>
+                            <g class="mask">
+                                <path d="M150 14c10-3 25-3 34 0 1 13-2 26-10 32-4 3-10 3-14 0-8-6-11-19-10-32z"/>
+                                <ellipse class="eye" cx="160.5" cy="25" rx="4" ry="2.6"/>
+                                <ellipse class="eye" cx="173.5" cy="25" rx="4" ry="2.6"/>
+                                <path class="mouth" d="M161 36c4 2.6 8 2.6 12 0"/>
+                            </g>
+                        </svg>
+                    </div>
+                    <h3>The trust trap</h3>
+                    <p class="body-copy">Synthetic audio, fake video and AI-generated "community feedback" become cheaper and more convincing.</p>
+                </article>
+            </div>
+        </div>
+        <aside class="speaker-notes" data-time="1:57 - 2:25">I see three traps. First, tools without power: communities give more data, headquarters get better dashboards, and power stays where it was. Second, listening without changing: grants lock in activities and budgets, and once feedback arrives every week, the gap between what communities say and what we do becomes impossible to ignore. Third, trust: the same AI that makes listening easier makes deception easier, from synthetic audio to fake community feedback.</aside>
+    </section>
+
+    <!-- 8. Three moves -->
+    <section class="slide" id="slide-8" role="region" aria-label="Slide 8: Three moves for organisations that want to listen" data-slide-index="7">
+        <div class="slide-content">
+            <p class="label enter-fade-up">3 moves for organisations that want to listen</p>
+            <h2 class="enter-blur" style="--delay:0.1s">The organisations that escaped these traps changed how they were structured</h2>
+            <div class="cards three" role="list">
+                <article class="card deep enter-fade-up" style="--delay:0.3s" role="listitem">
+                    <!-- A key: handing decision rights over together with the tools -->
+                    <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 48 48">
+        <rect class="ic-fill" x="5" y="4" width="21" height="36" rx="4.5"/>
+        <rect class="ic-line" x="5" y="4" width="21" height="36" rx="4.5"/>
+        <path class="ic-line" d="M10 22v4M13.5 18v12M17 15v18M20.5 19v10"/>
+        <circle class="ic-accent-line" cx="33" cy="31" r="6"/>
+        <path class="ic-accent-line" d="M37.4 35.4L45 43M41 39l2.6-2.6M43.6 41.6l1.8-1.8"/>
+    </svg></span>
+                    <h3>Pair tools with authority</h3>
+                    <p class="body-copy">When local teams get AI tools, settle which decisions they will own: priorities, resources, programme design.</p>
+                </article>
+                <article class="card deep enter-fade-up" style="--delay:0.45s" role="listitem">
+                    <!-- A loop: learn, adjust, repeat -->
+                    <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 48 48">
+        <rect class="ic-fill" x="4" y="8" width="30" height="31" rx="4"/>
+        <rect class="ic-line" x="4" y="8" width="30" height="31" rx="4"/>
+        <path class="ic-line" d="M12 4.5v7M26 4.5v7M4 17h30"/>
+        <circle class="ic-line-fill" cx="11.5" cy="24" r="1.6"/>
+        <circle class="ic-line-fill" cx="19" cy="24" r="1.6"/>
+        <circle class="ic-line-fill" cx="26.5" cy="24" r="1.6"/>
+        <circle class="ic-line-fill" cx="11.5" cy="31" r="1.6"/>
+        <circle class="ic-accent" cx="35" cy="35" r="10"/>
+        <path class="ic-on-accent" d="M30.5 34.5a4.8 4.8 0 0 1 8.6-2.3M39.4 29.6v3.2h-3.2M39.5 35.5a4.8 4.8 0 0 1-8.6 2.3M30.6 40.4v-3.2h3.2"/>
+    </svg></span>
+                    <h3>Make adaptation the default</h3>
+                    <p class="body-copy">Flexible resources and governance that can approve a change within days. A change backed by evidence is good management.</p>
+                </article>
+                <article class="card deep enter-fade-up" style="--delay:0.6s" role="listitem">
+                    <!-- A person and a heart: relationships as infrastructure -->
+                    <span class="icon-badge" aria-hidden="true"><svg viewBox="0 0 48 48">
+        <circle class="ic-fill" cx="14" cy="13" r="5.5"/>
+        <circle class="ic-line" cx="14" cy="13" r="5.5"/>
+        <path class="ic-fill" d="M3.5 41c0-9 4.6-14.5 10.5-14.5S24.5 32 24.5 41z"/>
+        <path class="ic-line" d="M3.5 41c0-9 4.6-14.5 10.5-14.5S24.5 32 24.5 41z"/>
+        <circle class="ic-line" cx="34" cy="13" r="5.5"/>
+        <path class="ic-line" d="M23.5 41c0-9 4.6-14.5 10.5-14.5S44.5 32 44.5 41z"/>
+        <path class="ic-accent" d="M24 30.5c-3.4-2.5-6.6-4.8-6.6-7.9 0-2.2 1.6-3.7 3.5-3.7 1.3 0 2.4.7 3.1 1.8.7-1.1 1.8-1.8 3.1-1.8 1.9 0 3.5 1.5 3.5 3.7 0 3.1-3.2 5.4-6.6 7.9z"/>
+    </svg></span>
+                    <h3>Invest in trust</h3>
+                    <p class="body-copy">Treat long-term relationships as core infrastructure and the sector’s first defence against misinformation.</p>
+                </article>
+            </div>
+        </div>
+        <aside class="speaker-notes" data-time="2:25 - 2:52">Over six years I have worked on AI projects with more than 100 funders and implementers. The organisations that escaped these traps made three moves. They paired tools with authority, settling up front which decisions local teams would own. They made adaptation the default, so a change backed by evidence counts as good management. And they invested in trust, treating long-term relationships as core infrastructure.</aside>
+    </section>
+
+    <!-- 9. Close -->
+    <section class="slide slide-close is-ink" id="slide-9" role="region" aria-label="Slide 9: AI is a mirror" data-slide-index="8">
+        <div class="slide-content">
+            <div class="close-text">
+                <h2 class="enter-blur" style="--delay:0.1s">AI is a mirror.</h2>
+                <p class="ask-line enter-fade-up" style="--delay:0.5s">It shows whether what communities tell us changes what we decide.</p>
+                <p class="ask-measure enter-fade-up" style="--delay:0.75s">Measure success by how often it does.</p>
+                <p class="presenter enter-fade-up" style="--delay:0.8s">Yau Levy - Co-founder, Rural Senses</p>
+                <p class="email enter-fade-up" style="--delay:0.95s"><a href="mailto:yau@ruralsenses.com">yau@ruralsenses.com</a><a href="https://ruralsenses.com" target="_blank" rel="noopener">ruralsenses.com</a></p>
+            </div>
+            <figure class="enter-fade-up" style="--delay:0.2s">
+                <img src="{{IMG:nura.jpg}}" alt="A group of people standing and talking outside a homestead in Uganda">
+                <figcaption>Working with communities in Uganda. Image: Nura global innovation lab</figcaption>
+            </figure>
+        </div>
+        <aside class="speaker-notes" data-time="2:52 - 3:00">AI is a mirror. Mirrors are uncomfortable, but useful if we are willing to look. It shows whether what communities tell us changes what we decide. Let's measure success by how often it does. Thank you.</aside>
+    </section>
+
+    <!-- ════════════ JS ════════════ -->
+    <script>
+    /* SlidePresentation, from references/html-template.md, with three changes:
+       the active slide gets .is-active so entrance effects play only there,
+       scrolling respects prefers-reduced-motion, and N opens presenter notes with a timer. */
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    class SlidePresentation {
+        constructor() {
+            this.slides = Array.from(document.querySelectorAll('.slide'));
+            this.current = 0;
+            this.touchStartY = 0;
+            this.touchStartX = 0;
+            this.init();
+        }
+
+        init() {
+            if (!this.slides.length) return;
+            this.buildNavDots();
+            this.bindKeyboard();
+            this.bindTouch();
+            this.bindWheel();
+            window.addEventListener('hashchange', () => this.goTo(this.getInitialSlide()));
+            this.observeSlides();
+            this.notes = new PresenterNotes(this);
+            this.goTo(this.getInitialSlide(), false, true);
+        }
+
+        buildNavDots() {
+            const nav = document.getElementById('navDots');
+            this.slides.forEach((_, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'nav-dot';
+                btn.setAttribute('aria-label', `Go to slide ${i + 1}`);
+                btn.addEventListener('click', () => this.goTo(i));
+                nav.appendChild(btn);
+            });
+            this.dots = Array.from(nav.querySelectorAll('.nav-dot'));
+        }
+
+        updateProgress() {
+            this.dots.forEach((d, i) => d.classList.toggle('active', i === this.current));
+        }
+
+        goTo(index, animate = true, force = false) {
+            const target = Math.max(0, Math.min(index, this.slides.length - 1));
+            if (target === this.current && !force) return;
+            this.current = target;
+            const slide = this.slides[target];
+            slide.scrollIntoView({ behavior: animate && !prefersReduced ? 'smooth' : 'instant' });
+            this.activate(slide);
+            history.replaceState(null, '', `#slide-${target + 1}`);
+            this.announce(slide.getAttribute('aria-label') || `Slide ${target + 1}`);
+        }
+
+        next() { this.goTo(this.current + 1); }
+        prev() { this.goTo(this.current - 1); }
+
+        getInitialSlide() {
+            const match = window.location.hash.match(/#slide-(\d+)/);
+            return match ? parseInt(match[1], 10) - 1 : 0;
+        }
+
+        /* Entrance effects are keyed to .is-active, so removing and re-adding it replays them */
+        activate(slide) {
+            this.slides.forEach(s => { if (s !== slide) s.classList.remove('is-active'); });
+            slide.classList.remove('is-active');
+            void slide.offsetHeight; // Intentional: reflow so the animations restart
+            slide.classList.add('is-active');
+            this.updateProgress();
+            this.notes?.render();
+        }
+
+        bindKeyboard() {
+            document.addEventListener('keydown', (e) => {
+                if (e.target.matches('[contenteditable], input, textarea')) return;
+                switch (e.key) {
+                    case 'ArrowDown': case 'ArrowRight': case ' ': case 'PageDown':
+                        e.preventDefault(); this.next(); break;
+                    case 'ArrowUp': case 'ArrowLeft': case 'PageUp':
+                        e.preventDefault(); this.prev(); break;
+                    case 'Home': e.preventDefault(); this.goTo(0); break;
+                    case 'End':  e.preventDefault(); this.goTo(this.slides.length - 1); break;
+                    case 'f': case 'F':
+                        if (!e.ctrlKey && !e.metaKey) this.toggleFullscreen(); break;
+                    case 'n': case 'N': this.notes.toggle(); break;
+                    case 't': case 'T': this.notes.resetClock(); break;
+                }
+            });
+        }
+
+        bindTouch() {
+            document.addEventListener('touchstart', (e) => {
+                this.touchStartY = e.touches[0].clientY;
+                this.touchStartX = e.touches[0].clientX;
+            }, { passive: true });
+            document.addEventListener('touchend', (e) => {
+                const dy = this.touchStartY - e.changedTouches[0].clientY;
+                const dx = this.touchStartX - e.changedTouches[0].clientX;
+                if (Math.max(Math.abs(dx), Math.abs(dy)) > 40) {
+                    const forward = Math.abs(dx) > Math.abs(dy) ? dx > 0 : dy > 0;
+                    forward ? this.next() : this.prev();
+                }
+            }, { passive: true });
+        }
+
+        bindWheel() {
+            let wheelTimeout;
+            document.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                clearTimeout(wheelTimeout);
+                wheelTimeout = setTimeout(() => (e.deltaY > 0 ? this.next() : this.prev()), 50);
+            }, { passive: false });
+        }
+
+        observeSlides() {
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    const idx = this.slides.indexOf(entry.target);
+                    if (idx !== -1 && idx !== this.current) {
+                        this.current = idx;
+                        this.activate(entry.target);
+                    }
+                });
+            }, { threshold: 0.6 });
+            this.slides.forEach(s => obs.observe(s));
+        }
+
+        toggleFullscreen() {
+            if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+            else document.exitFullscreen?.();
+        }
+
+        announce(message) {
+            let region = document.getElementById('sr-live');
+            if (!region) {
+                region = document.createElement('div');
+                region.id = 'sr-live';
+                region.setAttribute('aria-live', 'polite');
+                region.setAttribute('aria-atomic', 'true');
+                region.style.cssText = 'position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden;';
+                document.body.appendChild(region);
+            }
+            region.textContent = '';
+            requestAnimationFrame(() => { region.textContent = message; });
+        }
+    }
+
+    /* Presenter notes: N toggles the panel, the clock starts the first time it opens, T resets it */
+    class PresenterNotes {
+        constructor(deck) {
+            this.deck = deck;
+            this.panel = document.getElementById('notesPanel');
+            this.slot  = document.getElementById('notesSlot');
+            this.text  = document.getElementById('notesText');
+            this.clock = document.getElementById('notesClock');
+            this.startedAt = null;
+            setInterval(() => this.tick(), 500);
+        }
+        toggle() {
+            this.panel.hidden = !this.panel.hidden;
+            if (!this.panel.hidden && this.startedAt === null) this.startedAt = Date.now();
+            this.render();
+        }
+        resetClock() { this.startedAt = Date.now(); this.tick(); }
+        render() {
+            if (this.panel.hidden) return;
+            const slide = this.deck.slides[this.deck.current];
+            const aside = slide.querySelector('.speaker-notes');
+            this.slot.textContent = `Slide ${this.deck.current + 1} of ${this.deck.slides.length} - target ${aside?.dataset.time ?? ''}`;
+            this.text.textContent = aside?.textContent.trim() ?? '';
+        }
+        tick() {
+            if (this.startedAt === null) return;
+            const s = Math.floor((Date.now() - this.startedAt) / 1000);
+            this.clock.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+        }
+    }
+
+    /* Opening sequence helpers: run before the deck starts so slide 1 animates on first paint */
+    function buildWaveform(el, bars = 46) {
+        // Deterministic speech-like envelope (a few syllable bumps), identical on every load
+        for (let i = 0; i < bars; i++) {
+            const x = i / (bars - 1);
+            const envelope = Math.sin(Math.PI * x) ** 0.6;
+            const syllables = 0.55 + 0.45 * Math.abs(Math.sin(i * 1.7) * Math.cos(i * 0.45));
+            const bar = document.createElement('span');
+            bar.style.setProperty('--i', i);
+            bar.style.setProperty('--h', Math.max(0.12, envelope * syllables).toFixed(2));
+            el.appendChild(bar);
+        }
+    }
+    function splitWords(el) {
+        const words = el.textContent.trim().split(/\s+/);
+        el.setAttribute('aria-label', words.join(' '));
+        el.innerHTML = words.map((w, i) => `<span class="word" aria-hidden="true" style="--i:${i}">${w}</span>`).join(' ');
+    }
+
+    /* Slide 7, trap 3: a real waveform and an offset synthetic copy that glitches */
+    function buildTrustWaves(svg) {
+        const ns = 'http://www.w3.org/2000/svg';
+        const real = svg.querySelector('.wave-real');
+        const fake = svg.querySelector('.wave-fake');
+        for (let i = 0; i < 24; i++) {
+            const h = 10 + 46 * Math.abs(Math.sin(i * 0.9) * Math.cos(i * 0.31)) * Math.sin(Math.PI * (i + 1) / 25);
+            const x = 14 + i * 7;
+            for (const [group, dx, scale] of [[real, 0, 1], [fake, 2, 1.18]]) {
+                const r = document.createElementNS(ns, 'rect');
+                const hh = h * scale;
+                r.setAttribute('x', x + dx);
+                r.setAttribute('y', 78 - hh / 2);
+                r.setAttribute('width', 3.6);
+                r.setAttribute('height', hh);
+                r.setAttribute('rx', 1.8);
+                group.appendChild(r);
+            }
+        }
+    }
+
+    /* Slide 4 panel clock: counts while the slide is on screen, restarts each time it comes back */
+    function startCaptureClock(el, slide) {
+        let since = null;
+        setInterval(() => {
+            if (!slide.classList.contains('is-active')) { since = null; el.textContent = '00:00'; return; }
+            if (since === null) since = Date.now();
+            const s = Math.floor((Date.now() - since) / 1000);
+            el.textContent = `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
+        }, 250);
+    }
+
+    /* The logo is one CSS background, added to every slide here so the markup stays light */
+    function addLogos() {
+        document.querySelectorAll('.slide').forEach(slide => {
+            const mark = document.createElement('div');
+            mark.className = 'rs-mark';
+            mark.setAttribute('role', 'img');
+            mark.setAttribute('aria-label', 'Rural Senses');
+            slide.appendChild(mark);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        buildWaveform(document.getElementById('waveform'));
+        buildWaveform(document.getElementById('waveform2'), 40);
+        buildWaveform(document.getElementById('waveform3'), 34);
+        startCaptureClock(document.getElementById('cpTime'), document.getElementById('slide-4'));
+        document.querySelectorAll('.slide-traps svg').forEach(svg => { if (svg.querySelector('.wave-real')) buildTrustWaves(svg); });
+        addLogos();
+        document.querySelectorAll('.split-words').forEach(splitWords);
+        window.presentation = new SlidePresentation();
+    });
+    </script>
+</body>
+</html>
